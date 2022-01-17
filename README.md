@@ -2,7 +2,7 @@
 
 ## Description
 
-Based the on Book [Computer Graphics from Scratch](https://gabrielgambetta.com/computer-graphics-from-scratch/index.html)
+Based on the Book [Computer Graphics from Scratch](https://gabrielgambetta.com/computer-graphics-from-scratch/index.html)
 
 
 ![](raytracing_basic.jpg)
