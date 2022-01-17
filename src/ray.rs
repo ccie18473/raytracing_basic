@@ -146,8 +146,8 @@ impl Effects {
             //
             // shadow calculation
             //
-            let (_shadow_sphere, _shadow_t) =
-                closest_intersection(scene_point, light_dir, 0.001, t_max);
+            //let (_shadow_sphere, _shadow_t) =
+            //    closest_intersection(scene_point, light_dir, 0.001, t_max);
             //if shadow_sphere != None {
             //continue
             //}
@@ -202,7 +202,7 @@ pub fn intersect_ray_sphere(
     let t1 = (-b + (discriminant).sqrt()) / (2.0 * a);
     let t2 = (-b - (discriminant).sqrt()) / (2.0 * a);
 
-    return (t1, t2);
+    (t1, t2)
 }
 
 pub fn closest_intersection(
@@ -231,10 +231,6 @@ pub fn closest_intersection(
     return (closest_sphere, closest_t);
 }
 
-// viewport_size = 1 x 1
-// projection_plane_d = 1
-// gives a FOV of 53 degrees
-
 pub struct Ray {
     pub dir: Vector3<f64>,
     pub color: Color,
@@ -252,7 +248,7 @@ impl Ray {
         Ray { dir, color }
     }
     pub fn reflect_ray(&mut self, ray_vec: Vector3<f64>, normal: Vector3<f64>) -> Vector3<f64> {
-        return 2.0 * normal * cgmath::dot(normal, ray_vec) - ray_vec;
+        2.0 * normal * cgmath::dot(normal, ray_vec) - ray_vec
     }
     pub fn trace_ray(
         &mut self,
@@ -318,22 +314,27 @@ pub struct Rays {
 
 impl Rays {
     pub fn new(camera: &mut Camera, canvas_w: isize, canvas_h: isize) -> Rays {
+        let mut ray = crate::Ray::new();
+        let mut color: Color;
+        let mut offset: usize;
         let mut buffer = vec![0_u8; (canvas_w * canvas_h * 4) as usize];
 
         for x in 0..canvas_w {
             for y in 0..canvas_h {
-                let mut ray = crate::Ray::new();
                 ray.dir =
                     camera.canvas_to_viewport(x as f64, y as f64, canvas_w as f64, canvas_h as f64);
+                // apply rotation
                 camera.rotate_viewport(&mut ray.dir);
-
-                let color = ray.trace_ray(camera.pos, ray.dir, 0.001, 1e30, 3.0);
-                // put pixel
-                let offset = ((y * canvas_w + x) * 4) as usize;
-                buffer[offset] = (color.r * 255.0) as u8;
-                buffer[offset + 1] = (color.g * 255.0) as u8;
-                buffer[offset + 2] = (color.b * 255.0) as u8;
-                buffer[offset + 3] = (color.a * 255.0) as u8;
+                // run raytracing algorithm
+                color = ray.trace_ray(camera.pos, ray.dir, 0.001, 1e30, 3.0);
+                // convert color 0..1 to 0..255
+                let (r, g, b) = color.to_rgb();
+                // put pixel on buffer
+                offset = ((y * canvas_w + x) * 4) as usize;
+                buffer[offset] = r;
+                buffer[offset + 1] = g;
+                buffer[offset + 2] = b;
+                buffer[offset + 3] = 255;
             }
         }
         //draw the pixels as a buffer

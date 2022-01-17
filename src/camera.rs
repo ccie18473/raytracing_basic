@@ -14,10 +14,12 @@ pub enum Action {
     MoveBackward,
 }
 
+// viewport_size = 1 x 1
+// projection_plane_d = 1
+// gives a FOV of 53 degrees
 pub struct Camera {
     pub pos: Vector3<f64>,
     pub dir: Vector3<f64>,
-    pub plane: Vector3<f64>,
     pub angle: f64,
     pub viewport_w: f64,
     pub viewport_h: f64,
@@ -29,11 +31,9 @@ impl Camera {
     pub fn new() -> Camera {
         let pos = Vector3::new(0.0, 0.0, 0.0);
         let dir = Vector3::new(0.0, 0.0, 1.0);
-        let plane = Vector3::new(1.0, 0.0, 0.0);
         Camera {
             pos,
             dir,
-            plane,
             angle: 0.0,
             viewport_w: 1.0,
             viewport_h: 1.0,
