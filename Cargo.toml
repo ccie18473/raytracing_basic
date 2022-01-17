@@ -1,0 +1,12 @@
+[package]
+name = "raytracing_basic"
+version = "1.0.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+good-web-game = "0.4.1"
+miniquad = "=0.3.0-alpha.37"
+glam = { version = "0.17.3", features = ["mint"]}
+cgmath = { version = "0.17", features = ["mint"] }
