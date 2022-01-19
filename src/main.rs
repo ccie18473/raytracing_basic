@@ -43,7 +43,7 @@ impl ggez::event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> ggez::GameResult {
         const DESIRED_FPS: u32 = 60;
 
-        let delta = 1.0 / DESIRED_FPS as f64;
+        let delta = 1.0 / DESIRED_FPS as f32;
 
         self.game.update(delta);
 

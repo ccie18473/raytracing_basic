@@ -18,12 +18,12 @@ pub enum Action {
 // projection_plane_d = 1
 // gives a FOV of 53 degrees
 pub struct Camera {
-    pub pos: Vector3<f64>,
-    pub dir: Vector3<f64>,
-    pub angle: f64,
-    pub viewport_w: f64,
-    pub viewport_h: f64,
-    pub projection_plane_d: f64,
+    pub pos: Vector3<f32>,
+    pub dir: Vector3<f32>,
+    pub angle: f32,
+    pub viewport_w: f32,
+    pub viewport_h: f32,
+    pub projection_plane_d: f32,
     pub action: Action,
 }
 
@@ -47,11 +47,11 @@ impl Camera {
     //
     pub fn canvas_to_viewport(
         &mut self,
-        x: f64,
-        y: f64,
-        canvas_w: f64,
-        canvas_h: f64,
-    ) -> Vector3<f64> {
+        x: f32,
+        y: f32,
+        canvas_w: f32,
+        canvas_h: f32,
+    ) -> Vector3<f32> {
         let mut viewport_point = Vector3::new(0.0, 0.0, 0.0);
 
         viewport_point.x = (x - canvas_w / 2.0) * self.viewport_w / canvas_w;
@@ -64,7 +64,7 @@ impl Camera {
     // rotate xz-plane coordinates
     // around y-axis
     //
-    pub fn rotate_viewport(&mut self, point: &mut Vector3<f64>) {
+    pub fn rotate_viewport(&mut self, point: &mut Vector3<f32>) {
         let old_point_x = point.x;
         let old_point_z = point.z;
         point.x = old_point_x * (self.angle).cos() - old_point_z * (self.angle).sin();
@@ -106,7 +106,7 @@ impl Camera {
         }
     }
 
-    pub fn update(&mut self, delta: f64) {
+    pub fn update(&mut self, delta: f32) {
         //
         // speed modifiers
         //
